@@ -778,7 +778,7 @@ export default function ToolsPage({
               {nexusActiveTool === 'Simplifier' && (
                   <div className="space-y-4">
                       <div className="p-6 bg-black/20 rounded-[2rem] border border-white/10">
-                          <p className="text-white/60 text-sm mb-4">Explain a complex concept in simple terms. Avoid jargon (words > 9 letters).</p>
+                          <p className="text-white/60 text-sm mb-4">Explain a complex concept in simple terms. Avoid jargon (words {'>'} 9 letters).</p>
                           <textarea className="w-full bg-transparent text-white focus:outline-none h-32 resize-none" placeholder="Explain it simply..." value={nexusInput} onChange={(e) => setNexusInput(e.target.value)} />
                       </div>
                       <div className="flex justify-end gap-2">

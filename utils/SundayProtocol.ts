@@ -1,5 +1,5 @@
 import { generateSecretKey, getPublicKey, finalizeEvent, verifyEvent, nip19 } from 'nostr-tools';
-import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
+import { bytesToHex, hexToBytes } from 'nostr-tools/utils';
 
 // FIX: Added promiseAny polyfill for environments that do not support Promise.any (ES2020 and older)
 const promiseAny = <T>(promises: Promise<T>[]): Promise<T> => {
