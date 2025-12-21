@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Holistic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.1",
+    "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.1/client",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
+    "nostr-tools": "https://esm.sh/nostr-tools@2.10.4",
+    "@noble/hashes/": "https://esm.sh/@noble/hashes@^2.0.1/"
+  }
+}
+</script>
+    <style>
+      /* Hide scrollbar */
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+      
+      body {
+          background-color: #000000;
+          color: #e2e8f0;
+          overflow: hidden; /* App handles scrolling */
+          font-family: 'Inter', sans-serif; /* Cleaner, softer font default */
+      }
+
+      /* --- LIQUID PHYSICS ENGINE --- */
+
+      /* 1. Floating Animation (Buoyancy) */
+      @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
+      }
+      .animate-float { animation: float 6s ease-in-out infinite; }
+      .animate-float-delayed { animation: float 7s ease-in-out infinite 1s; }
+      .animate-float-slow { animation: float 8s ease-in-out infinite 2s; }
+
+      /* 2. Blob Morphing (Liquid Shape) */
+      @keyframes morph {
+          0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+          50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+          100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+      }
+      .animate-morph { animation: morph 8s ease-in-out infinite; }
+
+      /* 3. Elastic Press (Water Balloon Touch) */
+      .active-squish:active {
+          transform: scale(0.92);
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Springy */
+      }
+
+      /* 4. Glassmorphism Utilities */
+      .glass-panel {
+          background: rgba(255, 255, 255, 0.02); /* More transparent (2%) */
+          backdrop-filter: blur(10px); /* Reduced blur to see movement behind */
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      }
+      
+      .glass-panel-light {
+          background: rgba(255, 255, 255, 0.7);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.5);
+      }
+
+      /* 5. Aurora Background Animation */
+      @keyframes aurora {
+          0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+          33% { transform: translate(30px, -50px) scale(1.1); opacity: 0.6; }
+          66% { transform: translate(-20px, 20px) scale(0.9); opacity: 0.4; }
+          100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+      }
+      .animate-aurora { animation: aurora 10s infinite alternate ease-in-out; }
+
+      /* DUNE STYLE: Slow Cinematic Text Spread */
+      @keyframes cinematic-spread {
+          0% { 
+              letter-spacing: -0.05em; 
+              opacity: 0; 
+              transform: scale(0.95);
+              filter: blur(12px);
+          }
+          100% { 
+              letter-spacing: 0.15em; /* Reduced from 0.35em to keep text within viewport */
+              opacity: 1; 
+              transform: scale(1);
+              filter: blur(0px);
+          }
+      }
+      
+      @keyframes cinematic-fade-up {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 0.7; transform: translateY(0); }
+      }
+
+      .animate-cinematic-text {
+          animation: cinematic-spread 3.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+          white-space: nowrap;
+          will-change: letter-spacing, opacity, filter, transform;
+      }
+      
+      .animate-cinematic-subtext {
+          opacity: 0; /* Start invisible */
+          animation: cinematic-fade-up 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) 1.5s forwards; /* 1.5s delay */
+      }
+
+      /* Standard Animates */
+      .animate-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+      @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+      
+      .delay-100 { animation-delay: 100ms; }
+      .delay-200 { animation-delay: 200ms; }
+      .delay-300 { animation-delay: 300ms; }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
